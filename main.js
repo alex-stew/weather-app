@@ -32,5 +32,5 @@ function displayResults (weather) {
     weather_el.innerText = weather.weather[0].main;
 
     let icon_el = document.querySelector('.current-icon');
-    icon_el = 
+    // icon_el = 
 }
