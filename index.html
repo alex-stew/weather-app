@@ -18,7 +18,7 @@
 <body>
     <div class="app-wrap">
         <header>
-
+            <h1>Weather Dashboard</h1>
         </header>
         <main>
             <div class="search-container">
@@ -26,15 +26,19 @@
                     <input type="text" autocomplete="off" class="search-input" placeholder="Search for a city...">
                 </div>
             </div>
+            <div class = "sidebar-history">
+                
+            </div>
             <section class="weather-container">
-                <section class="location">
-                    <div class="city">Adelaide, AU</div>
-                    <div class="date">Wednesday 20 January 2021</div>
+                <div class="today-forecast">
+                    <h2 class="current-city"></h2>
+                    <h3 class="current-date"></h3>
                     <p><img class="current-icon" src="" alt=""></p>
-                </section>
-                <div class="current">
-                    <div class="temp">--<span>°c</span></div>
-                    <div class="weather">---</div>
+                    <span class="current-temp"></span>
+                    <p>Humidity: <span class="current-humid"></span></p>
+                    <p>Wind Speed: <span class="current-wind"></span></p>
+                    <p>UV Index: <span class="current-UV"></span></p>
+                    <p><span class="current-weather"></span></p>
                 </div>
             </section>
         </main>
