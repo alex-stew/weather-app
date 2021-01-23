@@ -9,12 +9,15 @@ body {
     background-image: url('bg.jpg');
     background-size: cover;
     background-position: top center;
+   
 }
 
 .app-wrap {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-width: 100vw;
+    background-size: cover;
     background-image: linear-gradient(to bottom, rgba(127, 40, 185, 0.1), rgba(0, 0, 0, 0.6));
 }
 
@@ -41,6 +44,7 @@ main {
 .weather-container {
     background-color: rgba(0, 0, 0, 0.3);
     padding: 25px;
+    margin-top: 10px;
 }
 
 .search-box-container {
@@ -82,6 +86,7 @@ main {
     border-radius: 16px;
     background-color: rgba(0, 0, 0, 0.3);
     color: #ffffff;
+    margin: 5px;
 }
 
 .prevSearchButton:hover {
@@ -92,6 +97,22 @@ main {
     color: #ffffff;
     transition: 0.1s ease-out;
     cursor: pointer;
+    margin: 5px;
+}
+
+.prevSearchButton:focus {
+    background-color: rgba(127, 40, 185, 0.1);
+    margin: 5px;
+}
+
+.clear-button {
+    padding: 3px;
+    margin: 5px;
+    border-radius: 16px;
+}
+
+.today-forecast {
+    color: rgb(181, 176, 187);
 }
 
 .current-city {
@@ -125,8 +146,8 @@ main {
     color: #fff;
     font-size: 102px;
     font-weight: 700;
-    margin: 30px 0px;
     text-shadow: 2px 10px rgba(0, 0, 0, 0.6);
+    padding: 0px;
 }
 
 .current-temp span {
@@ -134,8 +155,8 @@ main {
     color: #fff;
     font-size: 102px;
     font-weight: 700;
-    margin: 30px 0px;
     text-shadow: 2px 10px rgba(0, 0, 0, 0.6);
+    padding: 0px;
 }
 
 .current-weather {
