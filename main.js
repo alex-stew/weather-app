@@ -8,6 +8,7 @@ const currentUvEl = document.querySelector(".current-UV");
 const currentWeatherEl = document.querySelector(".current-weather");
 
 const clearButtonEl = document.querySelector(".clear-container");
+let prevSearchButtonEl = document.querySelector(".prevSearchButton")
 
 const weatherContainer = document.querySelector(".weather-container");
 const todayForecastEl = document.querySelector(".today-forecast");
@@ -21,7 +22,7 @@ const api = {
     base: "https://api.openweathermap.org/data/2.5/"
 }
 
-var currentCityCoords =  {lat: "-34.93", lon: "138.6"}
+var currentCityCoords = { lat: "-34.93", lon: "138.6" }
 
 var cityArray = [];
 
@@ -38,6 +39,13 @@ function createList() {
     })
 }
 
+// document.addEventListener('click', button);
+
+// function button(event) {
+//     prevSearchButtonEl = EventTarget;
+//         getTodayResults(prevSearchButtonEl).val();
+//         getForecastResults(prevSearchButtonEl).val();
+// }
 //ability to clear saved buttons and array ***not working
 function clearList() {
     $(clearButtonEl).on("click", cityArray.empty());
@@ -49,9 +57,8 @@ function load() {
 
     if (storedSearches !== null) {
         cityArray = storedSearches;
-    }
-
-    createList();
+        createList();
+    } else cityArray = ["adelaide"]
 
     if (cityArray) {
         var currentCity = cityArray[cityArray.length - 1]
@@ -116,7 +123,7 @@ function displayTodayResults(weatherCurrent) {
                         : "crimson";
         currentUvEl.innerHTML = `<span style="color:${uvRatingColour}">${uvValue}</span>`;
     };
-UVcall();
+    UVcall();
 }
 
 function getForecastResults(query) {
@@ -128,12 +135,86 @@ function getForecastResults(query) {
 
 function displayForecastResults(weatherFore) {
     console.log(weatherFore);
-    // $(currentDateEl).text(moment(weather.dt,'X' ).format('DD'));
-    $(forecastEl).append($(`<div class='forecast-box'><p>${weatherFore.name}</p>`));
-    // $(currentIconEl).attr("src", `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`);
-    // $(currentTempEl).text(weather.main.temp.toFixed(0) + "°c");
-    // $(currentWeatherEl).text(weather.weather[0].main);
-}
 
+    while (forecastEl.childElementCount) {
+        forecastEl.removeChild(forecastEl.childNodes[0]);
+    }
+
+    let intervals = weatherFore.list;
+
+    let i = 0;
+    let foreCastArray = [];
+
+    intervals.forEach(entry => {
+        let timeOfEntry = moment(entry.dt, 'X');
+
+        if (foreCastArray[i]) {
+
+            if (foreCastArray[i].date.isSame(timeOfEntry, 'day')) {
+
+                if (foreCastArray[i].temp < entry.main.temp) {
+                    foreCastArray[i] = {
+                        date: timeOfEntry,
+                        dateString: timeOfEntry.format('DD/MM/YYYY'),
+                        temp: entry.main.temp,
+                        humidity: entry.main.humidity,
+                        weather: entry.weather[0].icon
+
+                    };
+                }
+
+            } else {
+                i++;
+                foreCastArray[i] = {
+                    date: timeOfEntry,
+                    dateString: timeOfEntry.format('DD/MM/YYYY'),
+                    temp: entry.main.temp,
+                    humidity: entry.main.humidity,
+                    weather: entry.weather[0].icon
+                };
+
+            }
+
+        } else if (timeOfEntry.isAfter(moment(), 'day')) {
+            foreCastArray[i] = {
+                date: timeOfEntry,
+                dateString: timeOfEntry.format('DD/MM/YYYY'),
+                temp: entry.main.temp,
+                humidity: entry.main.humidity,
+                weather: entry.weather[0].icon
+            };
+        }
+        console.log(`Date: ${timeOfEntry}, Temperature: ${entry.main.temp}`);
+    })
+    console.log(foreCastArray);
+    createForecast(foreCastArray);
+};
+
+
+
+const createForecast = (forecastArray) =>
+
+    forecastArray.forEach(data => {
+        console.log(data);
+
+        let dayForecast = $("<div>")
+            .addClass(".forecast-box");
+
+        let forecastHead = $("<h2>")
+            .addClass(".current-date")
+            .text(data.date.format('dddd'))
+            dayForecast.append(forecastHead);
+
+        let forecastIcon = $("<img>")
+            .attr("src", `https://openweathermap.org/img/wn/${data.weather}@2x.png`)
+            dayForecast.append(forecastIcon);
+
+        let boxTemp = $("<p>")
+            .addClass(".current-wind")
+            .text(data.temp.toFixed(0) + "°c")
+            dayForecast.append(boxTemp);
+
+        forecastEl.appendChild(dayForecast);
+    });
 //Calls the last stored if it exists, to the initial screen
 load();

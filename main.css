@@ -47,6 +47,14 @@ main {
     margin-top: 10px;
 }
 
+.forecast-box {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    margin-top: 10px;
+    width: 150px;
+    height: 150px;
+}
+
 .search-box-container {
     display: flex;
     justify-content: center;
