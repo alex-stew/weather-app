@@ -13,4 +13,5 @@ https://alex-stew.github.io/homework-task6/
 - add logic so that if you search for a city that already exists in the array it is not added again
 
 <h2>Screenshot</h2>
+
 ![Screen Shot 2021-01-23 at 1 25 54 pm](https://user-images.githubusercontent.com/69836062/105566912-9b6ff400-5d7e-11eb-83f6-a995c2c35e0f.png)
