@@ -45,7 +45,10 @@ function createList() {
 
 $(clearButtonEl).click(function(clear) {
     clear.preventDefault();
-    cityArray.splice(0, cityArray.length);
+    cityArray = [];
+    localStorage.clear();
+    createList();
+    $(buttonContainer).addClass("hide");
     console.log('working');
     load();
 });
@@ -84,6 +87,10 @@ function setQuery(evt) {
         $(cityInputEl).val('');
     }
 }
+
+// function render(city) {
+
+// }
 
 function getTodayResults(query) {
     fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
