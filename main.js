@@ -7,24 +7,25 @@ const currentWindEl = document.querySelector(".current-wind");
 const currentUvEl = document.querySelector(".current-UV");
 const currentWeatherEl = document.querySelector(".current-weather");
 
-const clearButtonEl = document.querySelector(".clear-container");
-let prevSearchButtonEl = document.querySelector(".prevSearchButton")
-
 const weatherContainer = document.querySelector(".weather-container");
 const todayForecastEl = document.querySelector(".today-forecast");
 const forecastEl = document.querySelector(".forecast-container");
 const cityInputEl = document.querySelector(".search-input");
 
 const buttonContainer = document.querySelector(".sidebar-history");
+const clearButtonEl = document.querySelector(".clear-button");
 
+//Open weathers API
 const api = {
     key: "fc4670399e75ddcd0b3ecc9038b4503c",
     base: "https://api.openweathermap.org/data/2.5/"
 }
 
-var currentCityCoords = { lat: "-34.93", lon: "138.6" }
+//Declaring adelaide as 'home' load coordinates
+let currentCityCoords = { lat: "-34.93", lon: "138.6" }
 
-var cityArray = [];
+//Setting our storage array to nothing
+let cityArray = [];
 
 //This will put our array into local storage
 function storeSearches() {
@@ -33,23 +34,22 @@ function storeSearches() {
 
 //Adds searched cities to then be added as a list of buttons on the page
 function createList() {
-    $(buttonContainer).empty();
+   $(buttonContainer).empty()
     cityArray.forEach(function (city) {
-        $(buttonContainer).prepend($(`<button class = "prevSearchButton" data-city="${city}">${city}</button>`));
+        $(buttonContainer).removeClass("hide");
+        $(buttonContainer).prepend($(`<button class = "prevSearchButton" data-city="${city}">${city}</button>`))
     })
 }
 
-// document.addEventListener('click', button);
-
-// function button(event) {
-//     prevSearchButtonEl = EventTarget;
-//         getTodayResults(prevSearchButtonEl).val();
-//         getForecastResults(prevSearchButtonEl).val();
-// }
 //ability to clear saved buttons and array ***not working
-function clearList() {
-    $(clearButtonEl).on("click", cityArray.empty());
-}
+
+$(clearButtonEl).click(function(clear) {
+    clear.preventDefault();
+    cityArray.splice(0, cityArray.length);
+    console.log('working');
+    load();
+});
+
 
 //On site load, the last stored city is called through the API for current and forecast functions
 function load() {
@@ -59,11 +59,14 @@ function load() {
         cityArray = storedSearches;
         createList();
     } else cityArray = ["adelaide"]
+        
 
     if (cityArray) {
         var currentCity = cityArray[cityArray.length - 1]
         getTodayResults(currentCity, api.key);
+        getForecastResults(currentCity, api.key);
     }
+
 }
 
 cityInputEl.addEventListener('keypress', setQuery);
@@ -72,7 +75,8 @@ function setQuery(evt) {
     if (evt.keyCode == 13) {
         console.log(cityInputEl.value);
         var newEntry = $(cityInputEl).val().trim();
-        cityArray.push(newEntry);
+        cityArray.push(newEntry.toLowerCase());
+        cityArray = [...new Set(cityArray)];
         createList();
         storeSearches();
         getTodayResults(cityInputEl.value);
@@ -198,10 +202,10 @@ const createForecast = (forecastArray) =>
         console.log(data);
 
         let dayForecast = $("<div>")
-            .addClass(".forecast-box");
+            .addClass("forecast-box");
 
         let forecastHead = $("<h2>")
-            .addClass(".current-date")
+            .addClass("current-date")
             .text(data.date.format('dddd'))
             dayForecast.append(forecastHead);
 
@@ -210,11 +214,11 @@ const createForecast = (forecastArray) =>
             dayForecast.append(forecastIcon);
 
         let boxTemp = $("<p>")
-            .addClass(".current-wind")
+            .addClass("current-wind")
             .text(data.temp.toFixed(0) + "°c")
             dayForecast.append(boxTemp);
-
-        forecastEl.appendChild(dayForecast);
+            
+        $(forecastEl).append(dayForecast);
     });
 //Calls the last stored if it exists, to the initial screen
 load();
