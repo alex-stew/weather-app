@@ -1,4 +1,4 @@
-# homework-task6
+# weather-app
 <h1>Weather Application</h1>
 
 <h2>Application Use</h2>
